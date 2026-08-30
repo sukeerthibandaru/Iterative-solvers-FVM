@@ -1,5 +1,6 @@
 #include "mesh.hpp"
 #include "solvers.hpp"
+#include "linalg.hpp"
 #include <vector>
 #include <cmath>
 #include <chrono>
@@ -18,12 +19,7 @@ SolverResult solvePoissonSOR(const Mesh& mesh, double omega, double tol, int max
         maxDiff = 0.0;
         for (int j = 0; j < Nx; ++j) {
             for (int i = 0; i < Nx; ++i) {
-                double sum = mesh.f[index(i, j, Nx)];
-
-                if (i > 0)      sum += u[index(i - 1, j, Nx)];
-                if (i < Nx - 1) sum += u[index(i + 1, j, Nx)];
-                if (j > 0)      sum += u[index(i, j - 1, Nx)];
-                if (j < Nx - 1) sum += u[index(i, j + 1, Nx)];
+                double sum = mesh.f[index(i, j, Nx)] + applyLaplacianPoint(u, i, j, Nx);
 
                 double u_old = u[index(i, j, Nx)];
                 double u_new = (1.0 - omega) * u_old + (omega / 4.0) * sum;
