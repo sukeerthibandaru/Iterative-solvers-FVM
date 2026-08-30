@@ -13,7 +13,7 @@ const int postSmooth   = 2;   // Post-smoothing sweeps
 const int coarseSweeps = 50;  // Sweeps used as the coarsest-grid "direct" solve
 
 // One level of the grid hierarchy. Interior points only; the Dirichlet
-// boundary values are implicit zeros, exactly as in the other solvers.
+// boundary values are implicit zeros.
 struct Level {
     int Nx;                     // Interior points per dimension on this level
     double h;                   // Grid spacing on this level
