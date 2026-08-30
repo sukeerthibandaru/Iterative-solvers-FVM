@@ -15,7 +15,7 @@ const char* solutionMetaCsvPath = "output/solution_meta.csv";
 const char* benchmarkCsvPath = "output/benchmark.csv";
 
 // The analytical solution u(x,y) = sin^2(pi x) sin^2(pi y) lies in [0, 1],
-// so any converged numerical solution should too (within a small slack).
+//so any converged numerical solution should too (within a small slack).
 const double rangeSlack = 1e-3;
 
 bool inValidRange(const std::vector<double>& u) {
@@ -25,6 +25,7 @@ bool inValidRange(const std::vector<double>& u) {
     return true;
 }
 
+/*
 void writeRow(std::ofstream& out, const std::string& solver, int N, const SolverResult& r) {
     bool converged = r.residual_error <= tol;
     bool rangeOk = inValidRange(r.u);
@@ -38,9 +39,8 @@ void writeRow(std::ofstream& out, const std::string& solver, int N, const Solver
         << (rangeOk ? "yes" : "no")
         << "\n";
 }
+*/
 
-// Dump the solved grid as x,y,u rows so scripts/visualize.py can plot it, plus
-// a small metadata file (solver name, N, total interior cells) for plot labels
 void writeSolutionCSV(const Mesh& mesh, const SolverResult& r, const std::string& solver,
                        const std::string& path, const std::string& metaPath) {
     std::ofstream out(path);
@@ -70,16 +70,16 @@ int main() {
         Mesh mesh = createMesh(N);
 
         SolverResult sor = solvePoissonSOR(mesh, sorOmega, tol, maxIter);
-        writeRow(benchmark, "SOR", N, sor);
+        //writeRow(benchmark, "SOR", N, sor);
 
         SolverResult sd = solveSteepestDescent(mesh, tol, maxIter);
-        writeRow(benchmark, "SteepestD", N, sd);
+        //writeRow(benchmark, "SteepestD", N, sd);
 
         SolverResult cg = solveConjugateGradient(mesh, tol, maxIter);
-        writeRow(benchmark, "CG", N, cg);
+        //writeRow(benchmark, "CG", N, cg);
 
         SolverResult mg = solveMultigrid(mesh, tol, maxIter);
-        writeRow(benchmark, "Multigrid", N, mg);
+        //writeRow(benchmark, "Multigrid", N, mg);
 
         if (N == N_values.back()) {
             writeSolutionCSV(mesh, sor, "SOR", solutionCsvPath, solutionMetaCsvPath);
