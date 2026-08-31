@@ -1,4 +1,4 @@
-# Iterative-solvers-FVM
+# Iterative-linear-solvers-FVM
 
 Finite-volume solvers for the 2D Poisson equation on the unit square, benchmarked
 against a manufactured analytical solution.
